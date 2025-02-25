@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
+from django.core.files.storage import default_storage
+from storages.backends.gcloud import GoogleCloudStorage
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -107,7 +109,14 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-# Google Cloud Storage Settings (using native ADC/WIF)
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
 GS_PROJECT_ID = os.getenv('GS_PROJECT_ID')
+
+print(f"GOOGLE_APPLICATION_CREDENTIALS: {GOOGLE_APPLICATION_CREDENTIALS}")
+print(f"DEFAULT FILE STORAGE: {DEFAULT_FILE_STORAGE}")
+
+# Force reload storage
+storage_instance = GoogleCloudStorage()
+print(f"Manually loaded storage backend: {storage_instance.__class__.__name__}")

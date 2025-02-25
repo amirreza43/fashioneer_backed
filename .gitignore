@@ -4,7 +4,9 @@
 *.pyd
 __pycache__/
 *.so
-
+service-account.json
+test_upload.py
+profiles/
 # Virtual environment
 venv/
 env/
