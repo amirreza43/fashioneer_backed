@@ -2,15 +2,12 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
-from django.core.files.storage import default_storage
-from storages.backends.gcloud import GoogleCloudStorage
+from google.oauth2 import service_account
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Load environment variables from a .env file
 load_dotenv(BASE_DIR / '.env')
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-@a6koto@+5ho!o(9=q2u7rtu=j#8nvy87fp7&-ji^s1j^07@gz')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-@a6koto@+5ho!o(9=q2u7rtu=j#8nvy87fp7&-ji^07@gz')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else []
 
@@ -26,7 +23,7 @@ INSTALLED_APPS = [
     'users',
     'wishlist',
     'rest_framework',
-    'storages', 
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -67,18 +64,10 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -88,35 +77,47 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Custom User Model
 AUTH_USER_MODEL = 'users.User'
 
-# Django REST Framework Configuration using JWT
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',  # optional, for browsable API
+        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
 
-# Simple JWT settings (adjust as needed)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_BUCKET_NAME = os.getenv('GS_BUCKET_NAME')
 GS_PROJECT_ID = os.getenv('GS_PROJECT_ID')
+GOOGLE_APPLICATION_CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
-print(f"GOOGLE_APPLICATION_CREDENTIALS: {GOOGLE_APPLICATION_CREDENTIALS}")
-print(f"DEFAULT FILE STORAGE: {DEFAULT_FILE_STORAGE}")
+print("CHECK GS_BUCKET_NAME =>", GS_BUCKET_NAME)
+print("CHECK PROJECT_ID =>", GS_PROJECT_ID)
+print("CHECK CREDENTIALS =>", GOOGLE_APPLICATION_CREDENTIALS)
 
-# Force reload storage
-storage_instance = GoogleCloudStorage()
-print(f"Manually loaded storage backend: {storage_instance.__class__.__name__}")
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    GOOGLE_APPLICATION_CREDENTIALS
+)
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "OPTIONS": {
+            "bucket_name": GS_BUCKET_NAME,
+            "project_id": GS_PROJECT_ID,
+            "credentials": GS_CREDENTIALS,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/"

@@ -14,6 +14,10 @@ class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
     permission_classes = [AllowAny]
     parser_classes = [MultiPartParser, FormParser]
+    
+    def create(self, request, *args, **kwargs):
+        print("FILES:", request.FILES)  # <-- This prints to your console
+        return super().create(request, *args, **kwargs)
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
