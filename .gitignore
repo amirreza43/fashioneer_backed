@@ -1,66 +1,71 @@
-# Byte-compiled / optimized / DLL files
-*.pyc
+# -------------------------------------------------------------------
+#  Ignore compiled Python files & caches
+# -------------------------------------------------------------------
+__pycache__/
+*.py[cod]
 *.pyo
 *.pyd
-__pycache__/
-*.so
-service-account.json
-test_upload.py
-profiles/
-# Virtual environment
+
+# -------------------------------------------------------------------
+#  Virtual environments & environment-related files
+# -------------------------------------------------------------------
 venv/
 env/
+pip-selfcheck.json
+.pyenv/
+Pipfile
+Pipfile.lock
 
-# Django secret keys and environment variables
+# -------------------------------------------------------------------
+#  Django environment/settings
+# -------------------------------------------------------------------
 *.env
 *.env.*
+local_settings.py
+service-account.json  # GCP service account file
+test_upload.py        # local testing script, if not needed in repo
 
-# SQLite database files
-db.sqlite3
-*.sqlite3
-
-# Media and uploaded files
+# -------------------------------------------------------------------
+#  Django static and media files
+# -------------------------------------------------------------------
+static/
+staticfiles/
 media/
 *.media/
 
-# Logs
+# -------------------------------------------------------------------
+#  Django & database files
+# -------------------------------------------------------------------
+db.sqlite3
+*.sqlite3
+
+# -------------------------------------------------------------------
+#  Logs & debug
+# -------------------------------------------------------------------
 *.log
 logs/
 debug.log
 
-# Static files (generated with collectstatic)
-staticfiles/
-static/
-
-# Local development settings
-local_settings.py
-
-# OS-specific files
+# -------------------------------------------------------------------
+#  OS-specific junk
+# -------------------------------------------------------------------
 .DS_Store
 Thumbs.db
 
-# IDE / Editor files
+# -------------------------------------------------------------------
+#  IDE / Editor directories & files
+# -------------------------------------------------------------------
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Testing / Coverage reports
-htmlcov/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-
-# Build / packaging files
+# -------------------------------------------------------------------
+#  Build / packaging files
+# -------------------------------------------------------------------
 build/
 dist/
 *.egg-info/
 .eggs/
-
-# Pipfile and Pyenv
-pip-selfcheck.json
-.pyenv/
+*.cover
+coverage.xml
