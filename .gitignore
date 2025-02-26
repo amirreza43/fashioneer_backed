@@ -1,14 +1,10 @@
-# -------------------------------------------------------------------
-#  Ignore compiled Python files & caches
-# -------------------------------------------------------------------
+# Python caches
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 
-# -------------------------------------------------------------------
-#  Virtual environments & environment-related files
-# -------------------------------------------------------------------
+# Virtual env & dependency files
 venv/
 env/
 pip-selfcheck.json
@@ -16,53 +12,39 @@ pip-selfcheck.json
 Pipfile
 Pipfile.lock
 
-# -------------------------------------------------------------------
-#  Django environment/settings
-# -------------------------------------------------------------------
+# Django secrets & environment
 *.env
 *.env.*
 local_settings.py
-service-account.json  # GCP service account file
-test_upload.py        # local testing script, if not needed in repo
+service-account.json
+test_upload.py
 
-# -------------------------------------------------------------------
-#  Django static and media files
-# -------------------------------------------------------------------
+# Static and media
 static/
 staticfiles/
 media/
 *.media/
 
-# -------------------------------------------------------------------
-#  Django & database files
-# -------------------------------------------------------------------
+# SQLite databases
 db.sqlite3
 *.sqlite3
 
-# -------------------------------------------------------------------
-#  Logs & debug
-# -------------------------------------------------------------------
+# Logs
 *.log
 logs/
 debug.log
 
-# -------------------------------------------------------------------
-#  OS-specific junk
-# -------------------------------------------------------------------
+# OS-specific
 .DS_Store
 Thumbs.db
 
-# -------------------------------------------------------------------
-#  IDE / Editor directories & files
-# -------------------------------------------------------------------
+# IDE/Editor
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# -------------------------------------------------------------------
-#  Build / packaging files
-# -------------------------------------------------------------------
+# Build & packaging
 build/
 dist/
 *.egg-info/
